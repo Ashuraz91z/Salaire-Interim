@@ -4,7 +4,7 @@ struct ContentView: View {
     @State private var heures: String = ""
     @State private var salaireEstime: Double = 0.0
     @State private var salaireNet: Double = 0.0
-    @FocusState private var IsFocused: Bool
+    @FocusState private var isFocused: Bool
     
     let tauxHoraireNormal: Double = 11.65
     let tauxHoraireSupplementaire: Double = 14.56
@@ -33,7 +33,7 @@ struct ContentView: View {
     }
     
     func estimatePrix() {
-        IsFocused = false
+        isFocused = false
         let heuresFormatted = heures.replacingOccurrences(of: ",", with: ".")
         if var heuresDouble = Double(heuresFormatted) {
             var salaire = 0.0
@@ -60,57 +60,65 @@ struct ContentView: View {
             print("Erreur : L'entrée n'est pas un nombre valide")
         }
     }
-
     
     var body: some View {
         VStack {
-            Text("Entrez votre nombre d'heures fait sur la semaine")
-                .multilineTextAlignment(.center)
-                .frame(width: 300)
-            TextField("", text: $heures)
-                .padding()
-                .frame(width: 280)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .keyboardType(.decimalPad)
-                .focused($IsFocused)
+            Spacer()
             
-            Button(action: estimatePrix) {
-                Text("Lancez mon estimation")
+            VStack {
+                Text("Entrez votre nombre d'heures fait sur la semaine")
+                    .multilineTextAlignment(.center)
+                    .frame(width: 300)
+                
+                TextField("", text: $heures)
                     .padding()
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
-            }
-            
-            if salaireEstime != 0 {
-                VStack(spacing: 10) {
-                    HStack {
-                        Text("Salaire Brut estimé : ")
-                        Text("\(salaireEstime, specifier: "%.2f") €").bold()
-                    }
-                    .padding()
-                    
-                    
-                    if salaireNet != 0 {
-                        VStack {
-                            HStack {
-                                Text("Salaire Net estimé :")
-                                Text("\(salaireNet, specifier: "%.2f") €")
-                                    .bold()
+                    .frame(width: 280)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .keyboardType(.decimalPad)
+                    .focused($isFocused)
+                
+                Button(action: estimatePrix) {
+                    Text("Lancez mon estimation")
+                        .padding()
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                }
+                
+                if salaireEstime != 0 {
+                    VStack(spacing: 10) {
+                        HStack {
+                            Text("Salaire Brut estimé : ")
+                            Text("\(salaireEstime, specifier: "%.2f") €").bold()
+                        }
+                        .padding()
+                        
+                        if salaireNet != 0 {
+                            VStack {
+                                HStack {
+                                    Text("Salaire Net estimé :")
+                                    Text("\(salaireNet, specifier: "%.2f") €")
+                                        .bold()
+                                }
+                                Text("les cotisations changent en fonction de plusieurs paramètres, la marge d'erreur est plus élevée (~ 3%)")
+                                    .font(.system(size: 10))
+                                    .multilineTextAlignment(.center)
+                                    .padding(.top)
+                                    .foregroundColor(Color.gray)
+                                    .frame(width: 300)
                             }
-                            Text("les cotisations changent en fonction de plusieurs paramètres, la marge d'erreur est plus élevée (~ 3%)")
-                                .font(.system(size: 10))
-                                .multilineTextAlignment(.center)
-                                .padding(.top)
-                                .foregroundColor(Color.gray)
-                                .frame(width: 300)
-                                
                         }
                     }
                 }
             }
+            Spacer()
+            
+            Text("Développé par Lucas Fernandes")
+                .font(.footnote)
+                .foregroundColor(.gray)
+                .padding(.bottom, 5)
         }
-        .padding()
+        .edgesIgnoringSafeArea(.all)
     }
 }
 
