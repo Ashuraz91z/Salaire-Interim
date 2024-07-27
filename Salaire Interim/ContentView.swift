@@ -116,7 +116,7 @@ struct ContentView: View {
             Text("Développé par Lucas Fernandes")
                 .font(.footnote)
                 .foregroundColor(.gray)
-                .padding(.bottom, 5)
+                .padding(.bottom, 25)
         }
         .edgesIgnoringSafeArea(.all)
     }
